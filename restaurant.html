@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicious Delights</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #ffd93d;
+            --text-color: #2d3436;
+            --light-bg: #f9f9f9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+        }
+
+        /* Login Form Styles */
+        .login-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffd3a5 0%, #fd6585 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-form {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .social-login-btn {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .google-btn {
+            background-color: #DB4437;
+            color: white;
+        }
+
+        .linkedin-btn {
+            background-color: #0077B5;
+            color: white;
+        }
+
+        /* Menu Styles */
+        .menu-container {
+            display: none;
+            padding: 2rem 0;
+        }
+
+        .category-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .category-title {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            background: white;
+            margin: 0;
+            border-top: 1px solid #eee;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .price-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+        }
+
+        .modal-header {
+            border-bottom: none;
+            padding: 1.5rem 1.5rem 0.5rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .stars {
+            color: #ffd700;
+            font-size: 1.2rem;
+        }
+
+        .rating-count {
+            color: #666;
+            margin-left: 10px;
+        }
+
+        .review-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .review-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-author {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .review-date {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .order-btn {
+            background: var(--primary-color);
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Login Section -->
+    <div class="login-container" id="loginSection">
+        <div class="login-form">
+            <h2 class="text-center mb-4">Welcome to Delicious Delights</h2>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Your Name" required>
+                </div>
+                <div class="mb-3">
+                    <input type="email" class="form-control" placeholder="Your Email" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-3"
+                    style="background-color: var(--primary-color); border: none;">
+                    Login
+                </button>
+                <div class="text-center mb-3">OR</div>
+                <button type="button" class="social-login-btn google-btn">
+                    <i class="fab fa-google me-2"></i> Login with Google
+                </button>
+                <button type="button" class="social-login-btn linkedin-btn">
+                    <i class="fab fa-linkedin me-2"></i> Login with LinkedIn
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Menu Section -->
+    <div class="menu-container" id="menuSection">
+        <div class="container">
+            <h2 class="section-title">Choose Your Preference</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="category-card" onclick="showCategory('veg')">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="category-img"
+                            alt="Vegetarian">
+                        <h3 class="category-title">Vegetarian</h3>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="category-card" onclick="showCategory('nonveg')">
+                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" class="category-img"
+                            alt="Non-Vegetarian">
+                        <h3 class="category-title">Non-Vegetarian</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Items Section -->
+    <div class="menu-container" id="categoryItemsSection">
+        <div class="container">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left me-2"></i> Back
+            </button>
+            <h2 class="section-title" id="categoryTitle">Menu Items</h2>
+            <div class="row" id="menuItems">
+                <!-- Menu items will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Item Details -->
+    <div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="itemModalTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="" alt="" class="img-fluid rounded mb-3" id="itemModalImage">
+                    <div class="rating mb-3">
+                        <span class="stars"></span>
+                        <span class="rating-count"></span>
+                    </div>
+                    <div class="price-tag mb-3"></div>
+                    <div class="description mb-3"></div>
+                    <div class="reviews mb-3">
+                        <h6>Customer Reviews</h6>
+                        <div class="review-list"></div>
+                    </div>
+                    <button class="btn btn-primary w-100 order-btn">Order Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Menu data with unique images and details for demonstration
+        const menuData = {
+            veg: {
+                starters: [
+                    {
+                        name: 'Paneer Tikka',
+                        price: '₹250',
+                        image: 'paneertikka.jpeg',
+                        rating: 4.5,
+                        reviewCount: 128,
+                        description: 'Grilled cottage cheese marinated in spices and yogurt, served with mint chutney.',
+                        reviews: [
+                            { author: 'Rahul', date: '2024-01-15', text: 'Best paneer tikka in town!' },
+                            { author: 'Priya', date: '2024-01-10', text: 'Perfectly spiced and juicy.' }
+                        ]
+                    },
+                    {
+                        name: 'Veg Spring Roll',
+                        price: '₹180',
+                        image: 'vegspringroll.jpeg',
+                        rating: 4.2,
+                        reviewCount: 95,
+                        description: 'Crispy rolls filled with mixed vegetables and served with sweet chili sauce.',
+                        reviews: [
+                            { author: 'Amit', date: '2024-01-12', text: 'Crispy and delicious!' },
+                            { author: 'Neha', date: '2024-01-08', text: 'Perfect appetizer.' }
+                        ]
+                    },
+                    {
+                        name: 'Hara Bhara Kebab',
+                        price: '₹220',
+                        image: 'harabharakebab.jpeg',
+                        rating: 4.7,
+                        reviewCount: 105,
+                        description: 'A blend of fresh vegetables and paneer, cooked in a flavorful sauce.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Veg Manchurian',
+                        price: '₹200',
+                        image: 'vegmanchurian.jpeg',
+                        rating: 4.6,
+                        reviewCount: 110,
+                        description: 'Crispy fried vegetables coated in a spicy sauce, served with a side of rice.',
+                        reviews: [
+                            { author: 'Suresh', date: '2024-01-11', text: 'Aromatic and flavorful!' }
+                        ]
+                    },
+                    {
+                        name: 'Crispy Corn',
+                        price: '₹180',
+                        image: 'crispycorn.jpeg',
+                        rating: 4.4,
+                        reviewCount: 98,
+                        description: 'Crispy corn coated in a flavorful batter, served with a side of rice.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Veg Seekh Kebab',
+                        price: '₹240',
+                        image: 'vegseekhkebab.jpeg',
+                        rating: 4.8,
+                        reviewCount: 102,
+                        description: 'Grilled vegetables and paneer, cooked in a flavorful sauce.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Mushroom Tikka',
+                        price: '₹260',
+                        image: 'mushroomtikka.jpeg',
+                        rating: 4.9,
+                        reviewCount: 108,
+                        description: 'Grilled mushrooms marinated in spices and grilled to perfection.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Veg Cutlet',
+                        price: '₹190',
+                        image: 'vegcutlet.jpeg',
+                        rating: 4.7,
+                        reviewCount: 103,
+                        description: 'Crispy fried vegetables, cooked in a flavorful sauce.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Cheese Balls',
+                        price: '₹220',
+                        image: 'cheeseballs.jpeg',
+                        rating: 4.8,
+                        reviewCount: 104,
+                        description: 'Soft, spongy balls made from milk solids, soaked in rose-flavored sugar syrup.',
+                        reviews: [
+                            { author: 'Anjali', date: '2024-01-09', text: 'Melt in the mouth!' }
+                        ]
+                    },
+                    {
+                        name: 'Veg tempora',
+                        price: '₹150',
+                        image: 'veg tempura.jpeg',
+                        rating: 4.6,
+                        reviewCount: 101,
+                        description: 'A crispy, fried pastry filled with spiced potatoes and peas.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    }
+
+                    // ...add more items with unique images and details
+                ],
+                biryani: [
+                    {
+                        name: 'Veg Biryani',
+                        price: '₹200',
+                        image: 'vegbiryani.jpeg',
+                        rating: 4.6,
+                        reviewCount: 110,
+                        description: 'Aromatic basmati rice cooked with fresh vegetables and Indian spices.',
+                        reviews: [
+                            { author: 'Suresh', date: '2024-01-11', text: 'Aromatic and flavorful!' }
+                        ]
+                    },
+                    {
+                        name: 'Veg Hyderabadi Biryani',
+                        price: '₹260',
+                        image: 'veghyderabadhi.jpeg',
+                        rating: 4.9,
+                        reviewCount: 108,
+                        description: 'Aromatic basmati rice cooked with fresh vegetables and Indian spices.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Veg Lucknowi Biryani',
+                        price: '₹270',
+                        image: 'veglucknowi.jpeg',
+                        rating: 4.9,
+                        reviewCount: 108,
+                        description: 'Aromatic basmati rice cooked with fresh vegetables and Indian spices.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Veg Dum Biryani',
+                        price: '₹280',
+                        image: 'vegdum.jpeg',
+                        rating: 4.9,
+                        reviewCount: 108,
+                        description: 'Aromatic basmati rice cooked with fresh vegetables and Indian spices.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Veg Pulao',
+                        price: '₹290',
+                        image: 'vegpulao.jpeg',
+                        rating: 4.9,
+                        reviewCount: 108,
+                        description: 'Aromatic basmati rice cooked with fresh vegetables and Indian spices.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Jeera Rice',
+                        price: '₹180',
+                        image: 'jeerarice.jpeg',
+                        rating: 4.9,
+                        reviewCount: 108,
+                        description: 'Aromatic basmati rice cooked with fresh vegetables and Indian spices.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Mixed Veg Biryani',
+                        price: '₹240',
+                        image: 'mixedveg.jpeg',
+                        rating: 4.9,
+                        reviewCount: 108,
+                        description: 'Aromatic basmati rice cooked with fresh vegetables and Indian spices.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Soya Biryani',
+                        price: '₹210',
+                        image: 'soyabiryani.jpeg',
+                        rating: 4.9,
+                        reviewCount: 108,
+                        description: 'Aromatic basmati rice cooked with fresh vegetables and Indian spices.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Paneer Biryani',
+                        price: '₹250',
+                        image: 'paneerbiryani.jpeg',
+                        rating: 4.9,
+                        reviewCount: 108,
+                        description: 'Aromatic basmati rice cooked with fresh vegetables and Indian spices.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    },
+                    {
+                        name: 'Mushroom Biryani',
+                        price: '₹250',
+                        image: 'mushroombiryani.jpeg',
+                        rating: 4.9,
+                        reviewCount: 108,
+                        description: 'Aromatic basmati rice cooked with fresh vegetables and Indian spices.',
+                        reviews: [
+                            { author: 'Rajesh', date: '2024-01-13', text: 'A classic favorite!' },
+                            { author: 'Sneha', date: '2024-01-09', text: 'Perfectly balanced flavors.' }
+                        ]
+                    }
+
+
+
+
+                    // ...add more items
+                ],
+                desserts: [
+                    {
+                        name: 'Kulfi',
+                        price: '₹120',
+                        image: 'kulfi.jpeg',
+                        rating: 4.8,
+                        reviewCount: 140,
+                        description: 'Soft, spongy balls made from milk solids, soaked in rose-flavored sugar syrup.',
+                        reviews: [
+                            { author: 'Anjali', date: '2024-01-09', text: 'Melt in the mouth!' }
+                        ]
+                    },
+                    {
+                        name: 'Rasmalai',
+                        price: '₹150',
+                        image: 'rasmalai.jpeg',
+                        rating: 4.8,
+                        reviewCount: 140,
+                        description: 'Soft, spongy balls made from milk solids, soaked in rose-flavored sugar syrup.',
+                        reviews: [
+                            { author: 'Anjali', date: '2024-01-09', text: 'Melt in the mouth!' }
+                        ]
+                    },
+                    {
+                        name: 'Jangri',
+                        price: '₹140',
+                        image: 'jangri.jpeg',
+                        rating: 4.8,
+                        reviewCount: 140,
+                        description: 'Soft, spongy balls made from milk solids, soaked in rose-flavored sugar syrup.',
+                        reviews: [
+                            { author: 'Anjali', date: '2024-01-09', text: 'Melt in the mouth!' }
+                        ]
+                    },
+                    {
+                        name: 'Chakara Pongali',
+                        price: '₹170',
+                        image: 'chakrapongali.jpeg',
+                        rating: 4.8,
+                        reviewCount: 140,
+                        description: 'Soft, spongy balls made from milk solids, soaked in rose-flavored sugar syrup.',
+                        reviews: [
+                            { author: 'Anjali', date: '2024-01-09', text: 'Melt in the mouth!' }
+                        ]
+                    },
+                    {
+                        name: 'Gulab Jamun',
+                        price: '₹120',
+                        image: 'gulabjam.jpeg',
+                        rating: 4.8,
+                        reviewCount: 140,
+                        description: 'Soft, spongy balls made from milk solids, soaked in rose-flavored sugar syrup.',
+                        reviews: [
+                            { author: 'Anjali', date: '2024-01-09', text: 'Melt in the mouth!' }
+                        ]
+                    },
+                    {
+                        name: 'Ice Cream',
+                        price: '₹150',
+                        image: 'icecream.jpeg',
+                        rating: 4.8,
+                        reviewCount: 140,
+                        description: 'Soft, spongy balls made from milk solids, soaked in rose-flavored sugar syrup.',
+                        reviews: [
+                            { author: 'Anjali', date: '2024-01-09', text: 'Melt in the mouth!' }
+                        ]
+                    },
+                    {
+                        name: 'Palakova',
+                        price: '₹130',
+                        image: 'palakova.jpeg',
+                        rating: 4.8,
+                        reviewCount: 140,
+                        description: 'Soft, spongy balls made from milk solids, soaked in rose-flavored sugar syrup.',
+                        reviews: [
+                            { author: 'Anjali', date: '2024-01-09', text: 'Melt in the mouth!' }
+                        ]
+                    },
+                    {
+                        name: 'Jalebi',
+                        price: '₹100',
+                        image: 'jilebi.jpeg',
+                        rating: 4.8,
+                        reviewCount: 140,
+                        description: 'Soft, spongy balls made from milk solids, soaked in rose-flavored sugar syrup.',
+                        reviews: [
+                            { author: 'Anjali', date: '2024-01-09', text: 'Melt in the mouth!' }
+                        ]
+                    },
+                    {
+                        name: 'Papaya Halwa',
+                        price: '₹130',
+                        image: 'papayahalwa.jpeg',
+                        rating: 4.8,
+                        reviewCount: 140,
+                        description: 'Soft, spongy balls made from milk solids, soaked in rose-flavored sugar syrup.',
+                        reviews: [
+                            { author: 'Anjali', date: '2024-01-09', text: 'Melt in the mouth!' }
+                        ]
+                    },
+                    {
+                        name: 'Payasam',
+                        price: '₹160',
+                        image: 'payasam.jpeg',
+                        rating: 4.8,
+                        reviewCount: 140,
+                        description: 'Soft, spongy balls made from milk solids, soaked in rose-flavored sugar syrup.',
+                        reviews: [
+                            { author: 'Anjali', date: '2024-01-09', text: 'Melt in the mouth!' }
+                        ]
+                    }
+
+                    // ...add more items
+                ]
+            },
+            nonveg: {
+                starters: [
+                    {
+                        name: 'Chicken Tikka',
+                        price: '₹300',
+                        image: 'tikka.jpg',
+                        rating: 4.7,
+                        reviewCount: 150,
+                        description: 'Tender chicken pieces marinated in spices and grilled to perfection.',
+                        reviews: [
+                            { author: 'Vikram', date: '2024-01-13', text: 'Juicy and flavorful!' }
+                        ]
+                    },
+                    {
+                        name: 'Fish Fry',
+                        price: '₹200',
+                        image: 'fishfry.jpeg',
+                        rating: 4.7,
+                        reviewCount: 150,
+                        description: 'Tender fish pieces marinated in spices and fried to perfection.',
+                        reviews: [
+                            { author: 'Vikram', date: '2024-01-13', text: 'Juicy and flavorful!' }
+                        ]
+                    },
+                    {
+                        name: 'Chicken 65',
+                        price: '₹250',
+                        image: 'chicken65.jpeg',
+                        rating: 4.7,
+                        reviewCount: 150,
+                        description: 'Spicy chicken pieces marinated in spices and fried to perfection.',
+                        reviews: [
+                            { author: 'Vikram', date: '2024-01-13', text: 'Juicy and flavorful!' }
+                        ]
+                    },
+                    {
+                        name: 'Chicken wings',
+                        price: '₹250',
+                        image: 'chickenwings.jpeg',
+                        rating: 4.7,
+                        reviewCount: 150,
+                        description: 'Spicy chicken pieces marinated in spices and fried to perfection.',
+                        reviews: [
+                            { author: 'Vikram', date: '2024-01-13', text: 'Juicy and flavorful!' }
+                        ]
+                    },
+                    {
+                        name: 'mutton seekh kabab',
+                        price: '₹250',
+                        image: 'muttonseekhkebab.jpeg',
+                        rating: 4.7,
+                        reviewCount: 150,
+                        description: 'Spicy chicken pieces marinated in spices and fried to perfection.',
+                        reviews: [
+                            { author: 'Vikram', date: '2024-01-13', text: 'Juicy and flavorful!' }
+                        ]
+                    },
+                    {
+                        name: 'chicken manchurian',
+                        price: '₹250',
+                        image: 'chickenmanchurian.jpeg',
+                        rating: 4.7,
+                        reviewCount: 150,
+                        description: 'Spicy chicken pieces marinated in spices and fried to perfection.',
+                        reviews: [
+                            { author: 'Vikram', date: '2024-01-13', text: 'Juicy and flavorful!' }
+                        ]
+                    },
+                    {
+                        name: 'fish tikka',
+                        price: '₹250',
+                        image: 'fishtikka.jpeg',
+                        rating: 4.7,
+                        reviewCount: 150,
+                        description: 'Spicy chicken pieces marinated in spices and fried to perfection.',
+                        reviews: [
+                            { author: 'Vikram', date: '2024-01-13', text: 'Juicy and flavorful!' }
+                        ]
+                    },
+                    {
+                        name: 'chicken spring roll',
+                        price: '₹250',
+                        image: 'chickenspringroll.jpeg',
+                        rating: 4.7,
+                        reviewCount: 150,
+                        description: 'Spicy chicken pieces marinated in spices and fried to perfection.',
+                        reviews: [
+                            { author: 'Vikram', date: '2024-01-13', text: 'Juicy and flavorful!' }
+                        ]
+                    },
+                    {
+                        name: 'mutton tikka',
+                        price: '₹250',
+                        image: 'muttontikka.jpeg',
+                        rating: 4.7,
+                        reviewCount: 150,
+                        description: 'Spicy chicken pieces marinated in spices and fried to perfection.',
+                        reviews: [
+                            { author: 'Vikram', date: '2024-01-13', text: 'Juicy and flavorful!' }
+                        ]
+                    },
+                    {
+                        name: 'chicken tempura',
+                        price: '₹250',
+                        image: 'chickentempura.jpeg',
+                        rating: 4.7,
+                        reviewCount: 150,
+                        description: 'Spicy chicken pieces marinated in spices and fried to perfection.',
+                        reviews: [
+                            { author: 'Vikram', date: '2024-01-13', text: 'Juicy and flavorful!' }
+                        ]
+                    }
+                    // ...add more items
+                ],
+                biryani: [
+                    {
+                        name: 'Chicken Biryani',
+                        price: '₹250',
+                        image: 'chickenbiriyani.jpeg',
+                        rating: 4.9,
+                        reviewCount: 200,
+                        description: 'Classic biryani with succulent chicken and aromatic rice.',
+                        reviews: [
+                            { author: 'Ramesh', date: '2024-01-14', text: 'Best biryani ever!' }
+                        ]
+                    },
+                    {
+                        name: 'mutton biryani',
+                        price: '₹250',
+                        image: 'muttonbiriyani.jpeg',
+                        rating: 4.9,
+                        reviewCount: 200,
+                        description: 'Classic biryani with succulent chicken and aromatic rice.',
+                        reviews: [
+                            { author: 'Ramesh', date: '2024-01-14', text: 'Best biryani ever!' }
+                        ]
+                    },
+                    {
+                        name: 'special chicken biryani',
+                        price: '₹250',
+                        image: 'specialmutton.jpeg',
+                        rating: 4.9,
+                        reviewCount: 200,
+                        description: 'Classic biryani with succulent chicken and aromatic rice.',
+                        reviews: [
+                            { author: 'Ramesh', date: '2024-01-14', text: 'Best biryani ever!' }
+                        ]
+                    },
+                    {
+                        name: 'Hyderabadhi biryani',
+                        price: '₹250',
+                        image: 'hyderabadibiriyani.jpeg',
+                        rating: 4.9,
+                        reviewCount: 200,
+                        description: 'Classic biryani with succulent chicken and aromatic rice.',
+                        reviews: [
+                            { author: 'Ramesh', date: '2024-01-14', text: 'Best biryani ever!' }
+                        ]
+                    },
+                    {
+                        name: 'Lucknowi biryani',
+                        price: '₹250',
+                        image: 'lucknowibiriyani.jpeg',
+                        rating: 4.9,
+                        reviewCount: 200,
+                        description: 'Classic biryani with succulent chicken and aromatic rice.',
+                        reviews: [
+                            { author: 'Ramesh', date: '2024-01-14', text: 'Best biryani ever!' }
+                        ]
+                    },
+                    {
+                        name: 'keema biryani',
+                        price: '₹250',
+                        image: 'keemabiriyani.jpeg',
+                        rating: 4.9,
+                        reviewCount: 200,
+                        description: 'Classic biryani with succulent chicken and aromatic rice.',
+                        reviews: [
+                            { author: 'Ramesh', date: '2024-01-14', text: 'Best biryani ever!' }
+                        ]
+                    },
+                    {
+                        name: 'chicken dum biryani',
+                        price: '₹250',
+                        image: 'chickendum.jpeg',
+                        rating: 4.9,
+                        reviewCount: 200,
+                        description: 'Classic biryani with succulent chicken and aromatic rice.',
+                        reviews: [
+                            { author: 'Ramesh', date: '2024-01-14', text: 'Best biryani ever!' }
+                        ]
+                    },
+                    {
+                        name: 'mutton dum biryani',
+                        price: '₹250',
+                        image: 'muttondum.jpeg',
+                        rating: 4.9,
+                        reviewCount: 200,
+                        description: 'Classic biryani with succulent chicken and aromatic rice.',
+                        reviews: [
+                            { author: 'Ramesh', date: '2024-01-14', text: 'Best biryani ever!' }
+                        ]
+                    },
+                    {
+                        name: 'family pack biryani',
+                        price: '₹250',
+                        image: 'familypack.jpeg',
+                        rating: 4.9,
+                        reviewCount: 200,
+                        description: 'Classic biryani with succulent chicken and aromatic rice.',
+                        reviews: [
+                            { author: 'Ramesh', date: '2024-01-14', text: 'Best biryani ever!' }
+                        ]
+                    },
+                    {
+                        name: 'special mutton biryani',
+                        price: '₹250',
+                        image: 'specialmutton.jpeg',
+                        rating: 4.9,
+                        reviewCount: 200,
+                        description: 'Classic biryani with succulent chicken and aromatic rice.',
+                        reviews: [
+                            { author: 'Ramesh', date: '2024-01-14', text: 'Best biryani ever!' }
+                        ]
+                    },
+
+                    // ...add more items
+                ],
+                desserts: [
+                    {
+                        name: 'Kulfi',
+                        price: '₹100',
+                        image: 'kulfi.jpeg',
+                        rating: 4.4,
+                        reviewCount: 90,
+                        description: 'Traditional Indian ice cream made with thickened milk and nuts.',
+                        reviews: [
+                            { author: 'Meena', date: '2024-01-07', text: 'Rich and creamy!' }
+                        ]
+                    },
+                    {
+                        name: 'Rasmalai',
+                        price: '₹150',
+                        image: 'rasmalai.jpeg',
+                        rating: 4.4,
+                        reviewCount: 90,
+                        description: 'Traditional Indian ice cream made with thickened milk and nuts.',
+                        reviews: [
+                            { author: 'Meena', date: '2024-01-07', text: 'Rich and creamy!' }
+                        ]
+                    },
+                    {
+                        name: 'Jangri',
+                        price: '₹140',
+                        image: 'jangri.jpeg',
+                        rating: 4.4,
+                        reviewCount: 90,
+                        description: 'Traditional Indian ice cream made with thickened milk and nuts.',
+                        reviews: [
+                            { author: 'Meena', date: '2024-01-07', text: 'Rich and creamy!' }
+                        ]
+                    },
+                    {
+                        name: 'Chakara Pongali',
+                        price: '₹170',
+                        image: 'chakrapongali.jpeg',
+                        rating: 4.4,
+                        reviewCount: 90,
+                        description: 'Traditional Indian ice cream made with thickened milk and nuts.',
+                        reviews: [
+                            { author: 'Meena', date: '2024-01-07', text: 'Rich and creamy!' }
+                        ]
+                    },
+                    {
+                        name: 'Gulab Jamun',
+                        price: '₹120',
+                        image: 'gulabjam.jpeg',
+                        rating: 4.4,
+                        reviewCount: 90,
+                        description: 'Traditional Indian ice cream made with thickened milk and nuts.',
+                        reviews: [
+                            { author: 'Meena', date: '2024-01-07', text: 'Rich and creamy!' }
+                        ]
+                    },
+                    {
+                        name: 'Ice Cream',
+                        price: '₹150',
+                        image: 'icecream.jpeg',
+                        rating: 4.4,
+                        reviewCount: 90,
+                        description: 'Traditional Indian ice cream made with thickened milk and nuts.',
+                        reviews: [
+                            { author: 'Meena', date: '2024-01-07', text: 'Rich and creamy!' }
+                        ]
+                    },
+                    {
+                        name: 'Palakova',
+                        price: '₹130',
+                        image: 'palakova.jpeg',
+                        rating: 4.4,
+                        reviewCount: 90,
+                        description: 'Traditional Indian ice cream made with thickened milk and nuts.',
+                        reviews: [
+                            { author: 'Meena', date: '2024-01-07', text: 'Rich and creamy!' }
+                        ]
+                    },
+                    {
+                        name: 'Jalebi',
+                        price: '₹100',
+                        image: 'jilebi.jpeg',
+                        rating: 4.4,
+                        reviewCount: 90,
+                        description: 'Traditional Indian ice cream made with thickened milk and nuts.',
+                        reviews: [
+                            { author: 'Meena', date: '2024-01-07', text: 'Rich and creamy!' }
+                        ]
+                    },
+                    {
+                        name: 'Papaya Halwa',
+                        price: '₹130',
+                        image: 'papayahalwa.jpeg',
+                        rating: 4.4,
+                        reviewCount: 90,
+                        description: 'Traditional Indian ice cream made with thickened milk and nuts.',
+                        reviews: [
+                            { author: 'Meena', date: '2024-01-07', text: 'Rich and creamy!' }
+                        ]
+                    },
+                    {
+                        name: 'Payasam',
+                        price: '₹160',
+                        image: 'payasam.jpeg',
+                        rating: 4.4,
+                        reviewCount: 90,
+                        description: 'Traditional Indian ice cream made with thickened milk and nuts.',
+                        reviews: [
+                            { author: 'Meena', date: '2024-01-07', text: 'Rich and creamy!' }
+                        ]
+                    }
+                    // ...add more items
+                ]
+            }
+        };
+
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('menuSection').style.display = 'block';
+        });
+
+        // Show category items
+        function showCategory(category) {
+            document.getElementById('menuSection').style.display = 'none';
+            document.getElementById('categoryItemsSection').style.display = 'block';
+
+            const menuItems = document.getElementById('menuItems');
+            menuItems.innerHTML = '';
+
+            const categories = ['starters', 'biryani', 'desserts'];
+            categories.forEach(cat => {
+                const items = menuData[category][cat];
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'col-12 mb-4';
+                categoryDiv.innerHTML = `
+                    <h3 class="mb-3" style="color: var(--primary-color);">${cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
+                    <div class="row">
+                        ${items.map((item, idx) => `
+                            <div class="col-md-6 col-lg-4">
+                                <div class="menu-item" onclick='showItemDetails(${JSON.stringify(item)})'>
+                                    <img src="${item.image}" alt="${item.name}">
+                                    <h4 class="mt-3">${item.name}</h4>
+                                    <span class="price-tag">${item.price}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                menuItems.appendChild(categoryDiv);
+            });
+        }
+
+        // Go back to category selection
+        function goBack() {
+            document.getElementById('categoryItemsSection').style.display = 'none';
+            document.getElementById('menuSection').style.display = 'block';
+        }
+
+        // Social login buttons
+        document.querySelector('.google-btn').addEventListener('click', function () {
+            alert('Google login functionality would be implemented here');
+        });
+
+        document.querySelector('.linkedin-btn').addEventListener('click', function () {
+            alert('LinkedIn login functionality would be implemented here');
+        });
+
+        // Show item details in modal
+        function showItemDetails(item) {
+            const modal = new bootstrap.Modal(document.getElementById('itemModal'));
+            const modalTitle = document.getElementById('itemModalTitle');
+            const modalImage = document.getElementById('itemModalImage');
+            const starsContainer = document.querySelector('.stars');
+            const ratingCount = document.querySelector('.rating-count');
+            const priceTag = document.querySelector('.price-tag');
+            const description = document.querySelector('.description');
+            const reviewList = document.querySelector('.review-list');
+
+            // Set modal content
+            modalTitle.textContent = item.name;
+            modalImage.src = item.image;
+            modalImage.alt = item.name;
+
+            // Set rating
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= Math.floor(item.rating)) {
+                    stars += '★';
+                } else if (i - item.rating < 1) {
+                    stars += '½';
+                } else {
+                    stars += '☆';
+                }
+            }
+            starsContainer.innerHTML = stars;
+            ratingCount.textContent = `(${item.reviewCount} reviews)`;
+
+            // Set price
+            priceTag.textContent = item.price;
+
+            // Set description
+            description.textContent = item.description;
+
+            // Set reviews
+            reviewList.innerHTML = item.reviews.map(review => `
+                <div class="review-item">
+                    <div class="review-author">${review.author}</div>
+                    <div class="review-date">${review.date}</div>
+                    <div class="review-text">${review.text}</div>
+                </div>
+            `).join('');
+
+            // Show modal
+            modal.show();
+        }
+
+        // Order button click handler
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('.order-btn').addEventListener('click', function () {
+                alert('Order placed successfully! Thank you for your order.');
+                bootstrap.Modal.getInstance(document.getElementById('itemModal')).hide();
+            });
+        });
+    </script>
+</body>
+
+</html>
